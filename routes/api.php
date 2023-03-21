@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\RegionController;
 use App\Http\Controllers\Api\ProvincesController;
 
 /*
@@ -20,4 +21,20 @@ use App\Http\Controllers\Api\ProvincesController;
 // });
 
 
+
+
+
+
 Route::get('/provinces',[ProvincesController::class,'index']);
+Route::get('/provinces/{id}',[ProvincesController::class,'show']);
+
+
+Route::controller(RegionController::class)->group(function(){
+    Route::get('/regions','index');
+    Route::get('/regions/{id}','show');
+    Route::post('/regions/store','store');
+    Route::post('/regions/update/{id}','update');
+    Route::post('/regions/delete/{id}','delete');
+});
+
+

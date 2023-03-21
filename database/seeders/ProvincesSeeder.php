@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Provinces;
+use App\Models\Province;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class ProvincesSeeder extends Seeder
@@ -15,7 +16,7 @@ class ProvincesSeeder extends Seeder
      */
     public function run()
     {
-        Provinces::truncate();
+        DB::table('provinces')->delete();
         $data = [
             [
                 'name' => 'طرطوس',
@@ -61,6 +62,6 @@ class ProvincesSeeder extends Seeder
             ],
         ];
 
-        Provinces::insert($data);
+        Province::insert($data);
     }
 }
