@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UserSeeder extends Seeder
@@ -15,7 +16,8 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::truncate();
+
+        DB::table('users')->delete();
         User::create([
             'name' => 'mahmoudmiehob', 
             'email' => 'mahmoudmiehob@gmail.com',

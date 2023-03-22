@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\RegionController;
 use App\Http\Controllers\Api\ProvincesController;
+use App\Http\Controllers\Api\UserinformationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,4 +38,9 @@ Route::controller(RegionController::class)->group(function(){
     Route::post('/regions/delete/{id}','delete');
 });
 
+
+
+Route::get('/usersinfo',[UserinformationController::class,'index']);
+Route::get('/userinfo/{id}',[UserinformationController::class,'show']);
+Route::post('/userinfo/store',[UserinformationController::class,'store']);
 
