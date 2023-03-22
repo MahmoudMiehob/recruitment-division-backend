@@ -43,4 +43,6 @@ Route::controller(RegionController::class)->group(function(){
 Route::get('/usersinfo',[UserinformationController::class,'index']);
 Route::get('/userinfo/{id}',[UserinformationController::class,'show']);
 Route::post('/userinfo/store',[UserinformationController::class,'store']);
+Route::post('/userinfo/update/{id}',[UserinformationController::class,'update']);
+Route::post('/userinfo/delete/{id}',[UserinformationController::class,'delete']);
 
