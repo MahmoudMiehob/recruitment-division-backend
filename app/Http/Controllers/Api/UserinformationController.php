@@ -47,7 +47,7 @@ class UserinformationController extends Controller
             'region_id'           => 'required|integer|min:1',
             'national_identification_number'        => 'required|integer|min:1',
             'image'               => 'required|string',
-            'user_id'             => 'required|integer|min:1',
+            'user_id'             => 'required|integer|min:1|unique:userinformations',
         ]);
 
         if ($validate->fails()){
@@ -90,7 +90,7 @@ class UserinformationController extends Controller
             'region_id'           => 'required|integer|min:1',
             'national_identification_number'        => 'required|integer|min:1',
             'image'               => 'required|string',
-            'user_id'             => 'required|integer|min:1',
+            'user_id'             => 'required|integer|min:1|unique:userinformations',
         ]);
 
         if ($validate->fails()){

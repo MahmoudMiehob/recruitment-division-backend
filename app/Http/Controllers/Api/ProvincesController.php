@@ -13,7 +13,11 @@ class ProvincesController extends Controller
 
     public function index(){
         $provinces = Province::all();
-        return $this->apiresponse($provinces,'get all provinces',200);
+        if($provinces){
+            return $this->apiresponse($provinces,'get all provinces',200);
+        }else{
+            return $this->apiresponse(null,'عذرا حدث خطأ يرجى اعادة المحاولة',500);
+        }
     }
 
     public function show($id){
