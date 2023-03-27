@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\RegionController;
 use App\Http\Controllers\Api\ProvincesController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UserinformationController;
+use App\Http\Controllers\Api\TransactionArchiveController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,8 +52,19 @@ Route::controller(UserinformationController::class)->group(function(){
 
 
 
-Route::get('/transactions',[TransactionController::class,'index']);
-Route::get('/transaction/{id}',[TransactionController::class,'show']);
-Route::post('/transaction/store',[TransactionController::class,'store']);
-Route::post('/transaction/update/{id}',[TransactionController::class,'update']);
-Route::post('/transaction/delete/{id}',[TransactionController::class,'delete']);
+Route::controller(TransactionController::class)->group(function(){
+    Route::get('/transactions','index');
+    Route::get('/transaction/{id}','show');
+    Route::post('/transaction/store','store');
+    Route::post('/transaction/update/{id}','update');
+    Route::post('/transaction/delete/{id}','delete');
+});
+
+
+Route::controller(TransactionArchiveController::class)->group(function(){
+    Route::get('/transactionsarchive','index');
+    Route::get('/transactionsarchive/{id}','show');
+    Route::post('/transactionsarchive/restore/{id}','restore');
+    Route::post('/transactionsarchive/delete/{id}','delete');
+});
+
