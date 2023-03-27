@@ -14,12 +14,18 @@ return new class extends Migration
     public function up()
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('name');
+            $table->integer('region_id')->unsigned();
+            $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade');
+            $table->integer('province_id')->unsigned();
+            $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');
             $table->smallInteger('region_consent')->default(0);
             $table->smallInteger('provinces_consent')->default(0);
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('notes')->nullable()->default('لا يوجد اي ملاحظات') ;
+            $table->string('image')->nullable() ;
             $table->timestamps();
         });
     }

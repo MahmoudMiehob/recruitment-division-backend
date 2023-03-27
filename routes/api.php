@@ -50,4 +50,8 @@ Route::controller(UserinformationController::class)->group(function(){
 });
 
 
+
 Route::get('/transactions',[TransactionController::class,'index']);
+Route::get('/transaction/{id}',[TransactionController::class,'show']);
+Route::post('/transaction/store',[TransactionController::class,'store']);
+Route::post('/transaction/update/{id}',[TransactionController::class,'update']);
