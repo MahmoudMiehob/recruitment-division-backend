@@ -55,3 +55,4 @@ Route::get('/transactions',[TransactionController::class,'index']);
 Route::get('/transaction/{id}',[TransactionController::class,'show']);
 Route::post('/transaction/store',[TransactionController::class,'store']);
 Route::post('/transaction/update/{id}',[TransactionController::class,'update']);
+Route::post('/transaction/delete/{id}',[TransactionController::class,'delete']);

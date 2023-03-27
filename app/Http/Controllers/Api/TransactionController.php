@@ -124,4 +124,21 @@ class TransactionController extends Controller
             return $this->apiresponse(null,'عذرا المعاملة غير موجودة',500);
         }
     }
+
+
+    public function delete($id){
+
+        $transaction = Transaction::find($id);
+        if(!$transaction){
+            return $this->apiresponse(null,'عذرا المستخدم غير موجودة',500);
+        }else{
+            $transaction->delete($transaction);
+            if($transaction){
+                return $this->apiresponse(null,'تم حذف البيانات بنجاح',200);
+            }else{
+                return $this->apiresponse(null,'حدثت مشكلة يرجى المحاولة لاحقا',400);
+            }
+        }
+
+    }
 }
