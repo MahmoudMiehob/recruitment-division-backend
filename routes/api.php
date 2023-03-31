@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\RegionController;
 use App\Http\Controllers\Api\ProvincesController;
 use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\QuestionAnswerController;
 use App\Http\Controllers\Api\UserinformationController;
 use App\Http\Controllers\Api\TransactionArchiveController;
 
@@ -68,3 +69,11 @@ Route::controller(TransactionArchiveController::class)->group(function(){
     Route::post('/transactionsarchive/delete/{id}','delete');
 });
 
+
+
+Route::controller(QuestionAnswerController::class)->group(function(){
+    Route::get('/question_and_answer','index');
+    Route::post('/question_and_answer/store','store');
+    Route::post('/question_and_answer/update/{id}','update');
+    Route::post('/question_and_answer/delete/{id}','delete');
+});
