@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Models\Userinformation;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiResponseTrait;
 
 class UserinformationController extends Controller
 {
     use ApiResponseTrait ;
+    use UploadfileTrait ;
+
+
     public function index(){
         $usersinfo = Userinformation::with(['user'=>function($query){
             $query->select('id','name','email','status','auth_access');
@@ -46,12 +50,18 @@ class UserinformationController extends Controller
             'village'             => 'required|max:50|string',
             'region_id'           => 'required|integer|min:1',
             'national_identification_number'        => 'required|integer|min:1',
-            'image'               => 'string',
+            'image'               => 'image|mimes:jpg,png,jpeg,gif,svg',
             'user_id'             => 'required|integer|min:1|unique:userinformations',
         ]);
 
         if ($validate->fails()){
             return $this->apiresponse(null,$validate->errors(),500);
+        }
+
+        //upload image
+        $folder_path = $request->user_id . '/user';
+        if($request->file('image')){
+            $data['path'] = $this->uploadfile($request,$folder_path);
         }
 
         $userinfo = Userinformation::create([
@@ -63,7 +73,7 @@ class UserinformationController extends Controller
             'village'     =>$request->village,
             'region_id'   =>$request->region_id,
             'national_identification_number' =>$request->national_identification_number,
-            'image'       => $request->image,
+            'image'       => $data['path'] ,
             'user_id'     =>$request->user_id,
         ]);
 
@@ -85,8 +95,8 @@ class UserinformationController extends Controller
             'village'             => 'required|max:50|string',
             'region_id'           => 'required|integer|min:1',
             'national_identification_number'        => 'required|integer|min:1',
-            'image'               => 'string',
-            'user_id'             => 'required|integer|min:1|unique:userinformations',
+            'image'               => 'image|mimes:jpg,png,jpeg,gif,svg',
+            'user_id'             => 'required|integer|min:1',
         ]);
 
         if ($validate->fails()){
@@ -96,6 +106,14 @@ class UserinformationController extends Controller
         
         $userinfo = Userinformation::find($id);
         if($userinfo){
+
+            Storage::disk('img')->delete($userinfo->image);
+
+            $folder_path = $request->user_id . '/user';
+            if($request->file('image')){
+                $data['path'] = $this->uploadfile($request,$folder_path);
+            }
+
             $userinfo->update([
                 'mother_name' => $request->mother_name ,
                 'father_name' =>$request->father_name,
@@ -105,7 +123,7 @@ class UserinformationController extends Controller
                 'village'     =>$request->village,
                 'region_id'   =>$request->region_id,
                 'national_identification_number' =>$request->national_identification_number,
-                'image'       => $request->image,
+                'image'       => $data['path'],
                 'user_id'     =>$request->user_id,
             ]);
 
