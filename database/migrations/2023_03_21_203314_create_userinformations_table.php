@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('family_name');
             $table->integer('phone1');
             $table->integer('phone2')->nullable();
-            $table->string('village');
+            $table->integer('village_number');
             $table->integer('region_id')->unsigned();
             $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade');
             $table->integer('national_identification_number');//الرقم الوطني

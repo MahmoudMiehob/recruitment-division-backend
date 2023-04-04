@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\ProvincesSeeder;
+use Database\Seeders\TransactiontypeSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
@@ -20,5 +21,6 @@ class DatabaseSeeder extends Seeder
         
         $this->call(UserSeeder::class); //run Userseeder 
         $this->call(ProvincesSeeder::class); //run ProvincesSeeder 
+        $this->call(TransactiontypeSeeder::class); //run TransactiontypeSeeder 
     }
 }

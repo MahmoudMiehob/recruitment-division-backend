@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -36,17 +37,36 @@ class TransactionController extends Controller
     }
 
 
+    public function showalltransaction($id){
+        $transaction = Transaction::where('user_id',$id)->with(['user','region','province','transactiontype'])->get();
+        if($transaction){
+            return $this->apiresponse($transaction,'جميع المعاملات المتعلقة بالشخص',200);
+        }else{
+            return $this->apiresponse(null,'عذرا حدث خطأ يرجى اعادة المحاولة',500);
+        }
+    }
+
+
+
     public function store(Request $request){
         
         $validate = Validator::make($request->all(),[
-            'name'                => 'required|max:50|string',
-            'region_id'           => 'required|integer|min:1',
-            'province_id'         => 'required|integer|min:1',
-            'region_consent'      => 'required|integer|min:1',
-            'provinces_consent'   => 'required|integer|min:1',
-            'notes'               => 'required|string',
-            'image'               => 'image|mimes:jpg,png,jpeg,gif,svg',
-            'user_id'             => 'required|integer|min:1|unique:transactions',
+            'name'                              => 'required|max:50|string',
+            'mother_name'                       => 'required|max:50|string',
+            'father_name'                       => 'required|max:50|string',
+            'family_name'                       => 'required|max:50|string',
+            'phone1'                            => 'required|integer',
+            'village_number'                    => 'required|integer|min:1',
+            'national_identification_number'    => 'required|integer|min:1',
+            'front_face_of_identity'            => 'required|image|mimes:jpg,png,jpeg,gif,svg',
+            'back_face_of_identity'             => 'required|image|mimes:jpg,png,jpeg,gif,svg',
+            'attached_image'                    => 'image|mimes:jpg,png,jpeg,gif,svg',
+            'user_image'                        => 'image|mimes:jpg,png,jpeg,gif,svg',
+            'region_id'                         => 'required|integer|min:1',
+            'province_id'                       => 'required|integer|min:1',
+            'transactiontype_id'                => 'required|integer|min:1',
+            'notes'                             => 'required|string',
+            'user_id'                           => 'required|integer|min:1|unique:transactions',
         ]);
 
         if ($validate->fails()){
@@ -55,19 +75,41 @@ class TransactionController extends Controller
 
         //upload image
         $folder_path = $request->user_id . '/transaction';
-        if($request->file('image')){
-            $data['path'] = $this->uploadfile($request,$folder_path);
+        
+        if($request->file('front_face_of_identity')){
+            $inputName = 'front_face_of_identity';
+            $data['path_front_face'] = $this->uploadfile($request,$folder_path,$inputName);
+        }
+        if($request->file('back_face_of_identity')){
+            $inputName = 'back_face_of_identity';
+            $data['path_back_face'] = $this->uploadfile($request,$folder_path,$inputName);
+        }
+        if($request->file('attached_image')){
+            $inputName = 'attached_image';
+            $data['path_attached'] = $this->uploadfile($request,$folder_path,$inputName);
+        }
+        if($request->file('user_image')){
+            $inputName = 'user_image';
+            $data['path_user'] = $this->uploadfile($request,$folder_path,$inputName);
         }
 
         $transaction = Transaction::create([
-            'name'           => $request->name,
-            'region_id'      => $request->region_id,
-            'province_id'    => $request->province_id,
-            'region_consent' => $request->region_consent,
-            'provinces_consent' => $request->provinces_consent,
-            'notes'          => $request->notes,
-            'image'          => $data['path'] ,
-            'user_id'        => $request->user_id,
+            'name'                    => $request->name,
+            'mother_name'             => $request->mother_name,
+            'father_name'             => $request->father_name,
+            'family_name'             => $request->family_name,
+            'phone1'                  => $request->phone1,
+            'village_number'          => $request->village_number,
+            'national_identification_number'=> $request->national_identification_number,
+            'front_face_of_identity'  => $data['path_front_face'],
+            'back_face_of_identity'   => $data['path_back_face'],
+            'attached_image'          => $data['path_attached'],
+            'user_image'              => $data['path_user'],
+            'region_id'               => $request->region_id,
+            'province_id'             => $request->province_id,
+            'transactiontype_id'      => $request->transactiontype_id,
+            'notes'                   => $request->notes,
+            'user_id'                 => $request->user_id,
         ]);
 
         if($transaction){
@@ -80,14 +122,22 @@ class TransactionController extends Controller
 
     public function update(Request $request , $id){
         $validate = Validator::make($request->all(),[
-            'name'                => 'required|max:50|string',
-            'region_id'           => 'required|integer|min:1',
-            'province_id'         => 'required|integer|min:1',
-            'region_consent'      => 'required|integer|min:1',
-            'provinces_consent'   => 'required|integer|min:1',
-            'notes'               => 'required|string',
-            'image'               => 'image|mimes:jpg,png,jpeg,gif,svg',
-            'user_id'             => 'required|integer|min:1',
+            'name'                              => 'required|max:50|string',
+            'mother_name'                       => 'required|max:50|string',
+            'father_name'                       => 'required|max:50|string',
+            'family_name'                       => 'required|max:50|string',
+            'phone1'                            => 'required|integer',
+            'village_number'                    => 'required|integer|min:1',
+            'national_identification_number'    => 'required|integer|min:1',
+            'front_face_of_identity'            => 'required|image|mimes:jpg,png,jpeg,gif,svg',
+            'back_face_of_identity'             => 'required|image|mimes:jpg,png,jpeg,gif,svg',
+            'attached_image'                    => 'image|mimes:jpg,png,jpeg,gif,svg',
+            'user_image'                        => 'required|image|mimes:jpg,png,jpeg,gif,svg',
+            'region_id'                         => 'required|integer|min:1',
+            'province_id'                       => 'required|integer|min:1',
+            'transactiontype_id'                => 'required|integer|min:1',
+            'notes'                             => 'required|string',
+            'user_id'                           => 'required|integer|min:1',
         ]);
 
         if ($validate->fails()){
@@ -97,22 +147,51 @@ class TransactionController extends Controller
         $transaction = Transaction::find($id);
         if($transaction){
 
-            Storage::disk('img')->delete($transaction->image);
+            Storage::disk('img')->delete([
+                $transaction->front_face_of_identity,
+                $transaction->back_face_of_identity,
+                $transaction->attached_image,
+                $transaction->user_image
+            ]);
 
+
+            //upload image
             $folder_path = $request->user_id . '/transaction';
-            if($request->file('image')){
-                $data['path'] = $this->uploadfile($request,$folder_path);
+            
+            if($request->file('front_face_of_identity')){
+                $inputName = 'front_face_of_identity';
+                $data['path_front_face'] = $this->uploadfile($request,$folder_path,$inputName);
+            }
+            if($request->file('back_face_of_identity')){
+                $inputName = 'back_face_of_identity';
+                $data['path_back_face'] = $this->uploadfile($request,$folder_path,$inputName);
+            }
+            if($request->file('attached_image')){
+                $inputName = 'attached_image';
+                $data['path_attached'] = $this->uploadfile($request,$folder_path,$inputName);
+            }
+            if($request->file('user_image')){
+                $inputName = 'user_image';
+                $data['path_user'] = $this->uploadfile($request,$folder_path,$inputName);
             }
 
             $transaction->update([
-                'name'           => $request->name,
-                'region_id'      => $request->region_id,
-                'province_id'    => $request->province_id,
-                'region_consent' => $request->region_consent,
-                'provinces_consent' => $request->provinces_consent,
-                'notes'          => $request->notes,
-                'image'          => $data['path'] ,
-                'user_id'        => $request->user_id,
+                'name'                    => $request->name,
+                'mother_name'             => $request->mother_name,
+                'father_name'             => $request->father_name,
+                'family_name'             => $request->family_name,
+                'phone1'                  => $request->phone1,
+                'village_number'          => $request->village_number,
+                'national_identification_number'=> $request->national_identification_number,
+                'front_face_of_identity'  => $data['path_front_face'],
+                'back_face_of_identity'   => $data['path_back_face'],
+                'attached_image'          => $data['path_attached'],
+                'user_image'              => $data['path_user'],
+                'region_id'               => $request->region_id,
+                'province_id'             => $request->province_id,
+                'transactiontype_id'      => $request->transactiontype_id,
+                'notes'                   => $request->notes,
+                'user_id'                 => $request->user_id,
             ]) ;
 
             if($transaction){
@@ -131,7 +210,7 @@ class TransactionController extends Controller
 
         $transaction = Transaction::find($id);
         if(!$transaction){
-            return $this->apiresponse(null,'عذرا المستخدم غير موجودة',500);
+            return $this->apiresponse(null,'عذرا المعاملة غير موجودة',500);
         }else{
             $transaction->delete($transaction);
             if($transaction){

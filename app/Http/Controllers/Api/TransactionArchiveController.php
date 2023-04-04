@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Api\ApiResponseTrait;
 
 class TransactionArchiveController extends Controller
@@ -42,10 +43,19 @@ class TransactionArchiveController extends Controller
     }
 
     public function delete($id){
-        $transaction = Transaction::find($id);
+        
+        $transaction = Transaction::withTrashed()->where('id',$id)->first();
+
         if(!$transaction){
-            return $this->apiresponse(null,'عذرا المستخدم غير موجودة',500);
+            return $this->apiresponse(null,'عذرا المعاملة غير موجودة',500);
         }else{
+            Storage::disk('img')->delete([
+                $transaction->front_face_of_identity,
+                $transaction->back_face_of_identity,
+                $transaction->attached_image,
+                $transaction->user_image
+            ]);
+
             $transaction->forceDelete($transaction);
             if($transaction){
                 return $this->apiresponse(null,'تم حذف البيانات بنجاح',200);

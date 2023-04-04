@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Region;
 use App\Models\Province;
+use App\Models\Transactiontype;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +15,7 @@ class Transaction extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['name','region_id','province_id','region_consent','provinces_consent','notes','image','user_id'];
+    protected $guarded = [] ;
 
     public function user(){
         return $this->belongsTo(User::class);
@@ -28,5 +29,10 @@ class Transaction extends Model
     public function province()
     {
         return $this->belongsTo(Province::class);
+    }
+
+    public function transactiontype()
+    {
+        return $this->belongsTo(Transactiontype::class);
     }
 }

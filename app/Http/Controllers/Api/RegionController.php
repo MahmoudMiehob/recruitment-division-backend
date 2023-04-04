@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Region;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -17,6 +18,8 @@ class RegionController extends Controller
         return $this->apiresponse($regions,'get all regions',200);
     }
 
+
+
     public function show($id){
         $region = Region::find($id);
         if($region){
@@ -27,17 +30,31 @@ class RegionController extends Controller
     }
 
 
+    public function getAllRegionTransactions($id){
+        $region = Region::find($id);
+        if($region){
+            $transactions = Transaction::where('region_id',$id)->get();
+            if($transactions){
+                return $this->apiresponse($transactions,'المعاملات المتعلقة بالمنطقة',200);
+            }else{
+                return $this->apiresponse(null,'عذرا لم يتم العثور على معاملات متعلقة بهذه المنطقة المنطقة',400);
+            }
+        }else{
+            return $this->apiresponse(null,'عذرا لم يتم العثور على المنطقة',400);
+        }
+    }
+
+
+
     public function store(Request $request){
 
         $validate = Validator::make($request->all(),[
             'name'         => 'required|max:50|unique:regions|string',
             'provinces_id' => 'required|integer|min:1|lt:14',
         ]);
-
         if ($validate->fails()){
             return $this->apiresponse(null,$validate->errors(),500);
         }
-
         $region = Region::create([
             'name' => $request->name ,
             'provinces_id' =>$request->provinces_id
@@ -51,16 +68,16 @@ class RegionController extends Controller
     }
 
 
+
+
     public function update(Request $request, $id){
         $validate = Validator::make($request->all(),[
             'name'         => 'required|max:50|unique:regions|string',
             'provinces_id' => 'required|integer|min:1|lt:14',
         ]);
-
         if ($validate->fails()){
             return $this->apiresponse(null,$validate->errors(),500);
         }
-
         $region = Region::find($id);
         if($region){
             $region->update([
@@ -71,8 +88,9 @@ class RegionController extends Controller
         }else{
             return $this->apiresponse(null,'حدثت مشكلة يرجى المحاولة لاحقا',400);
         }
-
     }
+
+
 
 
     public function delete($id){
@@ -88,5 +106,6 @@ class RegionController extends Controller
             }
         }
     }
+
 
 }

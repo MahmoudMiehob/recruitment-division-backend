@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 
 trait UploadfileTrait {
 
-    public function uploadfile(Request $request,$folder_name){
+    public function uploadfile(Request $request,$folder_name,$inputName){
 
-        $image = $request->file('image')->getClientOriginalName();
-        $path = $request->file('image')->storeAs($folder_name,$image,'img');
+        $image = $request->file($inputName)->getClientOriginalName();
+        $path = $request->file($inputName)->storeAs($folder_name,$image,'img');
         
         return $path;
     }
