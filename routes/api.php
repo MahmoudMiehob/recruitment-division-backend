@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\AcceptController;
 use App\Http\Controllers\Api\RegionController;
 use App\Http\Controllers\Api\ProvincesController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\Api\TransactionArchiveController;
 
 
 
+
 Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
 
     Route::post('/login', [AuthController::class, 'login']);
@@ -41,6 +43,10 @@ Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
 
 
 Route::group(['middleware' => 'jwt.verify'],function(){
+
+
+    Route::get('/home',[HomeController::class,'__invoke']);
+
 
     Route::controller(ProvincesController::class)->group(function(){
         Route::get('/provinces','index');
