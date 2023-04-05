@@ -13,7 +13,7 @@ class TransactionArchiveController extends Controller
 
     use ApiResponseTrait ;
     public function index(){
-        $transactionarchives = Transaction::onlyTrashed()->get();
+        $transactionarchives = Transaction::onlyTrashed()->with(['user','region','province'])->get();
         if($transactionarchives){
             return $this->apiresponse($transactionarchives,'get all transactions archive',200);
         }else{
@@ -24,7 +24,8 @@ class TransactionArchiveController extends Controller
 
     public function show($id){
 
-        $transactionarchive = Transaction::withTrashed()->where('deleted_at','!=',null)->find($id);
+        $transactionarchive = Transaction::withTrashed()->where('deleted_at','!=',null)
+        ->with(['user','region','province'])->find($id);
         if($transactionarchive){
             return $this->apiresponse($transactionarchive,'get one transactions archive',200);
         }else{

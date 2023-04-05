@@ -37,6 +37,18 @@ class TransactionController extends Controller
     }
 
 
+
+    public function edit($id){
+        $transaction = Transaction::find($id);
+        if($transaction){
+            $transaction = Transaction::where('id', $id)->with(['user','region','province'])->get();
+            return $this->apiresponse($transaction,'تعديل معلومات المعاملة',200);
+        }else{
+            return $this->apiresponse(null,'عذرا حدث خطأ يرجى اعادة المحاولة',500);
+        }
+    }
+
+
     public function showalltransaction($id){
         $transaction = Transaction::where('user_id',$id)->with(['user','region','province','transactiontype'])->get();
         if($transaction){

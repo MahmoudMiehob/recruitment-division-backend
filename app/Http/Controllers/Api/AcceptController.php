@@ -22,6 +22,8 @@ class AcceptController extends Controller
         }
     }
 
+
+
     public function rejectregion(Request $request , $id){
         $transaction = Transaction::find($id);
 
@@ -34,6 +36,7 @@ class AcceptController extends Controller
             return $this->apiresponse(null,'عذرا حدث خطأ يرجى اعادة المحاولة',500);
         }
     }
+
 
 
 
@@ -50,6 +53,9 @@ class AcceptController extends Controller
         }
     }
 
+
+
+    
     public function rejectprovince(Request $request , $id){
         $transaction = Transaction::find($id);
 

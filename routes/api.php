@@ -56,7 +56,7 @@ Route::group(['middleware' => 'jwt.verify'],function(){
 
     Route::controller(RegionController::class)->group(function(){
         Route::get('/regions','index');
-        Route::get('/regions/{id}','show');
+        Route::get('/region/edit/{id}','edit');
         Route::get('/regions/{id}/transaction','getAllRegionTransactions');
         Route::post('/regions/store','store');
         Route::post('/regions/update/{id}','update');
@@ -67,6 +67,7 @@ Route::group(['middleware' => 'jwt.verify'],function(){
     Route::controller(UserinformationController::class)->group(function(){
         Route::get('/usersinfo','index');
         Route::get('/userinfo/{id}','show');
+        Route::get('/userinfo/edit/{id}','edit');
         Route::post('/userinfo/store','store');
         Route::post('/userinfo/update/{id}','update');
         Route::post('/userinfo/delete/{id}','delete');
@@ -77,6 +78,7 @@ Route::group(['middleware' => 'jwt.verify'],function(){
     Route::controller(TransactionController::class)->group(function(){
         Route::get('/transactions','index');
         Route::get('/transaction/{id}','show');
+        Route::get('/transaction/edit/{id}','edit');
         Route::get('/transaction/showalltransaction/{id}','showalltransaction');//
         Route::post('/transaction/store','store');
         Route::post('/transaction/update/{id}','update');

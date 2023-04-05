@@ -16,9 +16,7 @@ class UserinformationController extends Controller
 
 
     public function index(){
-        $usersinfo = Userinformation::with(['user'=>function($query){
-            $query->select('id','name','email','status','auth_access');
-        }])->get();
+        $usersinfo = Userinformation::with(['user','region'])->get();
         
         if($usersinfo){
             return $this->apiresponse($usersinfo,'معلومات المستخدمين',200);
@@ -26,10 +24,21 @@ class UserinformationController extends Controller
     }
 
 
+
     public function show($id){
-        $userinfo = Userinformation::where('id',$id)->with(['user'=>function($query){
-            $query->select('id','name','email','status','auth_access');
-        }])->first();
+        $userinfo = Userinformation::where('id',$id)->with(['user','region'])->first();
+
+        if($userinfo){
+            return $this->apiresponse($userinfo,'معلومات المستخدم',200);
+        }else{
+            return $this->apiresponse(null,'حدث خطأ يرجى اعادة المحاولة',500);
+        }
+    }
+
+
+
+    public function edit($id){
+        $userinfo = Userinformation::where('id',$id)->with(['user','region'])->first();
 
         if($userinfo){
             return $this->apiresponse($userinfo,'معلومات المستخدم',200);

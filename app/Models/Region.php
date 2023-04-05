@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Province;
 use App\Models\Transaction;
+use App\Models\Userinformation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -21,5 +22,11 @@ class Region extends Model
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+
+    public function usersinfo()
+    {
+        return $this->hasMany(Userinformation::class);
     }
 }

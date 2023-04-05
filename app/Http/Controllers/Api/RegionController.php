@@ -20,14 +20,15 @@ class RegionController extends Controller
 
 
 
-    public function show($id){
+    public function edit($id){
         $region = Region::find($id);
         if($region){
-            return $this->apiresponse($region,'معلومات المنطقة',200);
+            return $this->apiresponse($region,'تعديل معلومات المنطقة ',200);
         }else{
             return $this->apiresponse(null,'عذرا لم يتم العثور على المنطقة',400);
         }
     }
+
 
 
     public function getAllRegionTransactions($id){
