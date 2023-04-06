@@ -18,7 +18,7 @@ class UserController extends Controller
 
         $validate = Validator::make($request->all(),[
             'role'         => 'required|integer',
-            'status'       => 'required|integer',
+            'status_id'       => 'required|integer',
         ]);
         if ($validate->fails()){
             return $this->apiresponse(null,$validate->errors(),500);
@@ -29,7 +29,7 @@ class UserController extends Controller
         if($user){
             $user->update([
                 'role'   => $request->role,
-                'status' => $request->status,
+                'status_id' => $request->status_id,
             ]);
             $user->roles()->attach($request->role);
             return $this->apiresponse($user,'تم تعديل صلاحيات المستخدم بنجاح',200);

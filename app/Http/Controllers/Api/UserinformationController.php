@@ -56,7 +56,8 @@ class UserinformationController extends Controller
             'family_name'         => 'required|max:50|string',
             'phone1'              => 'required|numeric|digits:10',
             'phone2'              => 'numeric|digits:10',
-            'village'             => 'required|max:50|string',
+            'village_number'      => 'required|integer',
+            'enlistment_statue_id'=> 'required|integer',
             'region_id'           => 'required|integer|min:1',
             'national_identification_number'        => 'required|integer|min:1',
             'image'               => 'image|mimes:jpg,png,jpeg,gif,svg',
@@ -69,8 +70,9 @@ class UserinformationController extends Controller
 
         //upload image
         $folder_path = $request->user_id . '/user';
+        $inputName ='image';
         if($request->file('image')){
-            $data['path'] = $this->uploadfile($request,$folder_path);
+            $data['path'] = $this->uploadfile($request,$folder_path,$inputName);
         }
 
         $userinfo = Userinformation::create([
@@ -79,7 +81,8 @@ class UserinformationController extends Controller
             'family_name' =>$request->family_name,
             'phone1'      =>$request->phone1,
             'phone2'      =>$request->phone2,
-            'village'     =>$request->village,
+            'enlistment_statue_id' => $request-> enlistment_statue_id,
+            'village_number'  => $request-> village_number,
             'region_id'   =>$request->region_id,
             'national_identification_number' =>$request->national_identification_number,
             'image'       => $data['path'] ,
@@ -101,7 +104,8 @@ class UserinformationController extends Controller
             'family_name'         => 'required|max:50|string',
             'phone1'              => 'required|numeric|digits:10',
             'phone2'              => 'numeric|digits:10',
-            'village'             => 'required|max:50|string',
+            'village_number'      => 'required|integer',
+            'enlistment_statue_id'=> 'required|integer',
             'region_id'           => 'required|integer|min:1',
             'national_identification_number'        => 'required|integer|min:1',
             'image'               => 'image|mimes:jpg,png,jpeg,gif,svg',
@@ -119,8 +123,9 @@ class UserinformationController extends Controller
             Storage::disk('img')->delete($userinfo->image);
 
             $folder_path = $request->user_id . '/user';
+            $inputName ='image';
             if($request->file('image')){
-                $data['path'] = $this->uploadfile($request,$folder_path);
+                $data['path'] = $this->uploadfile($request,$folder_path,$inputName);
             }
 
             $userinfo->update([
@@ -129,7 +134,8 @@ class UserinformationController extends Controller
                 'family_name' =>$request->family_name,
                 'phone1'      =>$request->phone1,
                 'phone2'      =>$request->phone2,
-                'village'     =>$request->village,
+                'enlistment_statue_id' => $request-> enlistment_statue_id,
+                'village_number'  => $request-> village_number,
                 'region_id'   =>$request->region_id,
                 'national_identification_number' =>$request->national_identification_number,
                 'image'       => $data['path'],
@@ -137,7 +143,7 @@ class UserinformationController extends Controller
             ]);
 
             $userinfo = Userinformation::where('id',$id)->with(['user'=>function($query){
-                $query->select('id','name','email','status','auth_access');
+                $query->select('id','name','email','status_id','role');
             }])->first();
 
             return $this->apiresponse($userinfo,'تم تعديل البيانات بنجاح',200);

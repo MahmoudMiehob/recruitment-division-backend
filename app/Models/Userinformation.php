@@ -20,6 +20,8 @@ class Userinformation extends Model
         'village',
         'image',
         'region_id',
+        'village_number',
+        'enlistment_statue_id',
         'national_identification_number',
         'user_id',
     ];

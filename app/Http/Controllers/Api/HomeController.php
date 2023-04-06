@@ -22,9 +22,9 @@ class HomeController extends Controller
 
 
         $allUser = User::count();
-        $users = User::where('auth_access',1)->get()->count();
-        $admin = User::where('auth_access',2)->get()->count();
-        $superAdmin = User::where('auth_access',3)->get()->count();
+        $users = User::where('role',1)->get()->count();
+        $admin = User::where('role',2)->get()->count();
+        $superAdmin = User::where('role',3)->get()->count();
 
 
         $array =[

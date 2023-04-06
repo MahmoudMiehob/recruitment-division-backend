@@ -77,6 +77,7 @@ class TransactionController extends Controller
             'region_id'                         => 'required|integer|min:1',
             'province_id'                       => 'required|integer|min:1',
             'transactiontype_id'                => 'required|integer|min:1',
+            'enlistment_statue_id'              => 'required|integer|min:1',
             'notes'                             => 'required|string',
             'user_id'                           => 'required|integer|min:1|unique:transactions',
         ]);
@@ -120,6 +121,7 @@ class TransactionController extends Controller
             'region_id'               => $request->region_id,
             'province_id'             => $request->province_id,
             'transactiontype_id'      => $request->transactiontype_id,
+            'enlistment_statue_id'    =>$request->enlistment_statue_id,
             'notes'                   => $request->notes,
             'user_id'                 => $request->user_id,
         ]);
