@@ -20,9 +20,11 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         
+        $this->call(StatusSeeder::class); //run StatusSeeder
         $this->call(UserSeeder::class); //run Userseeder 
         $this->call(ProvincesSeeder::class); //run ProvincesSeeder 
         $this->call(TransactiontypeSeeder::class); //run TransactiontypeSeeder 
         $this->call(RoleSeeder::class); //run RoleSeeder 
+
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Role;
+use App\Models\Statue;
 use App\Models\Transaction;
 use App\Models\Userinformation;
 use Laravel\Sanctum\HasApiTokens;
@@ -49,11 +50,6 @@ class User extends Authenticatable implements JWTSubject
     ];
 
 
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class,'role_user');
-    }
-
     public function userinfo()
     {
         return $this->hasOne(Userinformation::class,'user_id','id');
@@ -62,6 +58,16 @@ class User extends Authenticatable implements JWTSubject
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class,'role_user');
+    }
+
+    public function statue()
+    {
+        return $this->belongsTo(Statue::class);
     }
 
 
