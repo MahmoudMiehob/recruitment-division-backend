@@ -7,6 +7,7 @@ use Database\Seeders\RoleSeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\ProvincesSeeder;
 use Database\Seeders\TransactiontypeSeeder;
+use Database\Seeders\EnlistmentStatusSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProvincesSeeder::class); //run ProvincesSeeder 
         $this->call(TransactiontypeSeeder::class); //run TransactiontypeSeeder 
         $this->call(RoleSeeder::class); //run RoleSeeder 
+        $this->call(EnlistmentStatusSeeder::class); //run RoleSeeder 
 
     }
 }

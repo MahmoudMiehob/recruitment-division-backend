@@ -10,7 +10,7 @@ class Statue extends Model
 {
     use HasFactory;
 
-
+    public $timestamps = false;
     
     public function users()
     {

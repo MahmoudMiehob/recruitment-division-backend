@@ -16,7 +16,7 @@ class UserinformationController extends Controller
 
 
     public function index(){
-        $usersinfo = Userinformation::with(['user','region'])->get();
+        $usersinfo = Userinformation::with(['user','region','enlistment_statue'])->get();
         
         if($usersinfo){
             return $this->apiresponse($usersinfo,'معلومات المستخدمين',200);
@@ -26,7 +26,7 @@ class UserinformationController extends Controller
 
 
     public function show($id){
-        $userinfo = Userinformation::where('id',$id)->with(['user','region'])->first();
+        $userinfo = Userinformation::where('id',$id)->with(['user','region','enlistment_statue'])->first();
 
         if($userinfo){
             return $this->apiresponse($userinfo,'معلومات المستخدم',200);
@@ -38,7 +38,7 @@ class UserinformationController extends Controller
 
 
     public function edit($id){
-        $userinfo = Userinformation::where('id',$id)->with(['user','region'])->first();
+        $userinfo = Userinformation::where('id',$id)->with(['user','region','enlistment_statue'])->first();
 
         if($userinfo){
             return $this->apiresponse($userinfo,'معلومات المستخدم',200);

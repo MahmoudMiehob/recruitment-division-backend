@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string('back_face_of_identity');
             $table->string('attached_image')->nullable();
             $table->string('user_image');
+            $table->integer('enlistment_statue_id')->unsigned();
+            $table->foreign('enlistment_statue_id')->references('id')->on('enlistment_statues')->onDelete('cascade');
             $table->integer('region_id')->unsigned();
             $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade');
             $table->integer('province_id')->unsigned();

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Region;
+use App\Models\Enlistment_statue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -32,4 +33,9 @@ class Userinformation extends Model
     {
         return $this->belongsTo(Region::class);
     } 
+
+    public function enlistment_statue()
+    {
+        return $this->belongsTo(Enlistment_statue::class);
+    }
 }

@@ -17,7 +17,7 @@ class TransactionController extends Controller
 
     public function index(){
 
-        $transactions = Transaction::with(['user','region','province'])->get();
+        $transactions = Transaction::with(['user','region','province','enlistment_statue','transactiontype'])->get();
         if($transactions){
             return $this->apiresponse($transactions,'get all transactions',200);
         }else{
@@ -29,7 +29,7 @@ class TransactionController extends Controller
     public function show($id){
         $transaction = Transaction::find($id);
         if($transaction){
-            $transaction = Transaction::where('id', $id)->with(['user','region','province'])->get();
+            $transaction = Transaction::where('id', $id)->with(['user','region','province','enlistment_statue','transactiontype'])->get();
             return $this->apiresponse($transaction,'get one transactions',200);
         }else{
             return $this->apiresponse(null,'عذرا حدث خطأ يرجى اعادة المحاولة',500);
@@ -41,7 +41,7 @@ class TransactionController extends Controller
     public function edit($id){
         $transaction = Transaction::find($id);
         if($transaction){
-            $transaction = Transaction::where('id', $id)->with(['user','region','province'])->get();
+            $transaction = Transaction::where('id', $id)->with(['user','region','province','enlistment_statue','transactiontype'])->get();
             return $this->apiresponse($transaction,'تعديل معلومات المعاملة',200);
         }else{
             return $this->apiresponse(null,'عذرا حدث خطأ يرجى اعادة المحاولة',500);
@@ -50,7 +50,7 @@ class TransactionController extends Controller
 
 
     public function showalltransaction($id){
-        $transaction = Transaction::where('user_id',$id)->with(['user','region','province','transactiontype'])->get();
+        $transaction = Transaction::where('user_id',$id)->with(['user','region','province','transactiontype','enlistment_statue'])->get();
         if($transaction){
             return $this->apiresponse($transaction,'جميع المعاملات المتعلقة بالشخص',200);
         }else{

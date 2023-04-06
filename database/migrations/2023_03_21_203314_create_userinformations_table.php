@@ -21,13 +21,16 @@ return new class extends Migration
             $table->integer('phone1');
             $table->integer('phone2')->nullable();
             $table->integer('village_number');
+            $table->integer('enlistment_statue_id')->unsigned();
+            $table->foreign('enlistment_statue_id')->references('id')->on('enlistment_statues')->onDelete('cascade');
             $table->integer('region_id')->unsigned();
             $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade');
             $table->integer('national_identification_number');//الرقم الوطني
             $table->string('image');
             $table->integer('user_id')->unsigned()->uniqid();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('NULL ON UPDATE CURRENT_TIMESTAMP'))->nullable();
         });
     }
 

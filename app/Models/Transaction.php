@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Region;
 use App\Models\Province;
 use App\Models\Transactiontype;
+use App\Models\Enlistment_statue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -34,5 +35,10 @@ class Transaction extends Model
     public function transactiontype()
     {
         return $this->belongsTo(Transactiontype::class);
+    }
+
+    public function enlistment_statue()
+    {
+        return $this->belongsTo(Enlistment_statue::class);
     }
 }
