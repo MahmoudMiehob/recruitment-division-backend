@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Role;
 use App\Models\Transaction;
 use App\Models\Userinformation;
 use Laravel\Sanctum\HasApiTokens;
@@ -24,6 +25,8 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'role',
+        'status'
     ];
 
     /**
@@ -45,6 +48,11 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class,'role_user');
+    }
 
     public function userinfo()
     {

@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
             'email' => 'mahmoudmiehob@gmail.com',
             'password' => bcrypt('12345678'),
             'status' => 1,
-            'auth_access' => 3,
+            'role' => 3,
         ]);
     }
 }

@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AcceptController;
 use App\Http\Controllers\Api\RegionController;
 use App\Http\Controllers\Api\ProvincesController;
@@ -42,10 +43,14 @@ Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
 });
 
 
+
 Route::group(['middleware' => 'jwt.verify'],function(){
 
 
     Route::get('/home',[HomeController::class,'__invoke']);
+
+
+    Route::post('/user-update/{id}',[UserController::class,'update']);
 
 
     Route::controller(ProvincesController::class)->group(function(){

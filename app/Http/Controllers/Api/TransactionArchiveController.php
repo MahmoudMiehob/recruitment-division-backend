@@ -21,7 +21,6 @@ class TransactionArchiveController extends Controller
         }
     }
 
-
     public function show($id){
 
         $transactionarchive = Transaction::withTrashed()->where('deleted_at','!=',null)
