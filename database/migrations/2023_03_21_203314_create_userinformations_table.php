@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -18,14 +19,14 @@ return new class extends Migration
             $table->string('mother_name');
             $table->string('father_name');
             $table->string('family_name');
-            $table->integer('phone1');
-            $table->integer('phone2')->nullable();
+            $table->string('phone1');
+            $table->string('phone2')->nullable();
             $table->integer('village_number');
             $table->integer('enlistment_statue_id')->unsigned();
             $table->foreign('enlistment_statue_id')->references('id')->on('enlistment_statues')->onDelete('cascade');
             $table->integer('region_id')->unsigned();
             $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade');
-            $table->integer('national_identification_number');//الرقم الوطني
+            $table->string('national_identification_number');//الرقم الوطني
             $table->string('image');
             $table->integer('user_id')->unsigned()->uniqid();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

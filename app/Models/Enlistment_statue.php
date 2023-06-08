@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Recruitment;
 use App\Models\Transaction;
 use App\Models\Userinformation;
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +17,12 @@ class Enlistment_statue extends Model
     public function transactions(){
         return $this->hasMany(Transaction::class);
     }
-    
+
+    public function recruitments()
+    {
+        return $this->hasMany(Recruitment::class);
+    }
+
     public function users(){
         return $this->hasMany(Userinformation::class);
     }

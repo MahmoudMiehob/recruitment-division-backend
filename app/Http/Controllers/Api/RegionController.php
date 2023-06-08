@@ -51,7 +51,7 @@ class RegionController extends Controller
 
         $validate = Validator::make($request->all(),[
             'name'         => 'required|max:50|unique:regions|string',
-            'provinces_id' => 'required|integer|min:1|lt:14',
+            'provinces_id' => 'required|integer|min:1',
         ]);
         if ($validate->fails()){
             return $this->apiresponse(null,$validate->errors(),500);
@@ -74,7 +74,7 @@ class RegionController extends Controller
     public function update(Request $request, $id){
         $validate = Validator::make($request->all(),[
             'name'         => 'required|max:50|unique:regions|string',
-            'provinces_id' => 'required|integer|min:1|lt:14',
+            'provinces_id' => 'required|integer|min:1',
         ]);
         if ($validate->fails()){
             return $this->apiresponse(null,$validate->errors(),500);
@@ -107,6 +107,5 @@ class RegionController extends Controller
             }
         }
     }
-
 
 }

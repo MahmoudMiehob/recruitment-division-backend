@@ -13,7 +13,7 @@ return [
     |
     */
 
-    
+
     'defaults' => [
         'guard' => 'api',
         'passwords' => 'users',
@@ -96,8 +96,8 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => 'password_resets',
-            'expire' => 60,
-            'throttle' => 60,
+            'expire' => 10080,
+            'throttle' => 10080,
         ],
     ],
 

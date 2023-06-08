@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AcceptController;
 use App\Http\Controllers\Api\RegionController;
 use App\Http\Controllers\Api\ProvincesController;
+use App\Http\Controllers\Api\RecruitmentController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\QuestionAnswerController;
 use App\Http\Controllers\Api\UserinformationController;
@@ -38,29 +39,52 @@ Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/user-profile', [AuthController::class, 'userProfile']);    
+    Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::get('/user-profile', [AuthController::class, 'userProfile']);
 
 });
 
 
+Route::controller(UserinformationController::class)->middleware('jwt.verify')->group(function(){
+    Route::get('/usersinfo','index');
+    Route::get('/userinfo/{id}','show');
+    Route::get('/userinfo/edit/{id}','edit');
+    Route::post('/userinfo/store','store');
+    Route::post('/userinfo/update/{id}','update');
+    Route::post('/userinfo/delete/{id}','delete');
+});
 
-Route::group(['middleware' => 'jwt.verify'],function(){
+Route::controller(TransactionController::class)->middleware('jwt.verify')->group(function(){
+    Route::post('/transaction/store','store');
+    Route::post('/transaction/update/{id}','update');
+    Route::post('/transaction/delete/{id}','delete');
+    Route::get('/transaction/edit/{id}','edit');
+    Route::get('/transaction/{id}','show');
+});
 
 
-    Route::get('/home',[HomeController::class,'__invoke']);
+Route::get('/question_and_answer',[QuestionAnswerController::class,'index']);
 
 
-    Route::post('/user-update/{id}',[UserController::class,'update']);
+Route::controller(ProvincesController::class)->middleware('jwt.verify')->group(function(){
+    Route::get('/provinces','index');
+    Route::get('/provinces/{id}','show');
+});
+
+Route::controller(RegionController::class)->middleware('jwt.verify')->group(function(){
+    Route::get('/regions','index');
+});
+
+Route::group(['middleware' => ['jwt.verify','admin']],function(){
 
 
-    Route::controller(ProvincesController::class)->group(function(){
-        Route::get('/provinces','index');
-        Route::get('/provinces/{id}','show');
-    });
+    Route::get('/home',[HomeController::class,'__invoke'])->middleware('super-admin');
+    Route::post('/user-update/{id}',[UserController::class,'update'])->middleware('super-admin');
+
+
 
 
     Route::controller(RegionController::class)->group(function(){
-        Route::get('/regions','index');
         Route::get('/region/edit/{id}','edit');
         Route::get('/regions/{id}/transaction','getAllRegionTransactions');
         Route::post('/regions/store','store');
@@ -69,25 +93,21 @@ Route::group(['middleware' => 'jwt.verify'],function(){
     });
 
 
-    Route::controller(UserinformationController::class)->group(function(){
-        Route::get('/usersinfo','index');
-        Route::get('/userinfo/{id}','show');
-        Route::get('/userinfo/edit/{id}','edit');
-        Route::post('/userinfo/store','store');
-        Route::post('/userinfo/update/{id}','update');
-        Route::post('/userinfo/delete/{id}','delete');
+    Route::controller(RecruitmentController::class)->group(function(){
+        Route::get('/recruitments','index');
+        Route::get('/recruitment/{id}','show');
+        Route::get('/recruitment/edit/{id}','edit');
+        Route::post('/recruitment/store','store');
+        Route::post('/recruitment/update/{id}','update');
+        Route::post('/recruitment/delete/{id}','delete');
+
     });
 
 
 
     Route::controller(TransactionController::class)->group(function(){
         Route::get('/transactions','index');
-        Route::get('/transaction/{id}','show');
-        Route::get('/transaction/edit/{id}','edit');
-        Route::get('/transaction/showalltransaction/{id}','showalltransaction');//
-        Route::post('/transaction/store','store');
-        Route::post('/transaction/update/{id}','update');
-        Route::post('/transaction/delete/{id}','delete');
+        Route::get('/transaction/showalltransaction/{id}','showalltransaction');
     });
 
 
@@ -101,10 +121,9 @@ Route::group(['middleware' => 'jwt.verify'],function(){
 
 
     Route::controller(QuestionAnswerController::class)->group(function(){
-        Route::get('/question_and_answer','index');
-        Route::post('/question_and_answer/store','store');
-        Route::post('/question_and_answer/update/{id}','update');
-        Route::post('/question_and_answer/delete/{id}','delete');
+        Route::post('/question_and_answer/store','store')->middleware('super-admin');
+        Route::post('/question_and_answer/update/{id}','update')->middleware('super-admin');
+        Route::post('/question_and_answer/delete/{id}','delete')->middleware('super-admin');
     });
 
 
@@ -112,8 +131,8 @@ Route::group(['middleware' => 'jwt.verify'],function(){
     Route::controller(AcceptController::class)->group(function(){
         Route::post('/transactions/acceptregion/{id}','acceptregion');
         Route::post('/transactions/rejectregion/{id}','rejectregion');
-        Route::post('/transactions/acceptprovince/{id}','acceptprovince');
-        Route::post('/transactions/rejectprovince/{id}','rejectprovince');
+        Route::post('/transactions/acceptprovince/{id}','acceptprovince')->middleware('super-admin');
+        Route::post('/transactions/rejectprovince/{id}','rejectprovince')->middleware('super-admin');
     });
 
 });

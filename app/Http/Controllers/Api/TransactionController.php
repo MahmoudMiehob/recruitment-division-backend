@@ -61,15 +61,15 @@ class TransactionController extends Controller
 
 
     public function store(Request $request){
-        
+
         $validate = Validator::make($request->all(),[
             'name'                              => 'required|max:50|string',
             'mother_name'                       => 'required|max:50|string',
             'father_name'                       => 'required|max:50|string',
             'family_name'                       => 'required|max:50|string',
-            'phone1'                            => 'required|integer',
+            'phone1'                            => 'required|min:10|max:14|regex:/^([0-9\s\-\+\(\)]*)$/',
             'village_number'                    => 'required|integer|min:1',
-            'national_identification_number'    => 'required|integer|min:1',
+            'national_identification_number'    => 'required|min:8|max:14|regex:/^([0-9\s\-\+\(\)]*)$/',
             'front_face_of_identity'            => 'required|image|mimes:jpg,png,jpeg,gif,svg',
             'back_face_of_identity'             => 'required|image|mimes:jpg,png,jpeg,gif,svg',
             'attached_image'                    => 'image|mimes:jpg,png,jpeg,gif,svg',
@@ -79,7 +79,7 @@ class TransactionController extends Controller
             'transactiontype_id'                => 'required|integer|min:1',
             'enlistment_statue_id'              => 'required|integer|min:1',
             'notes'                             => 'required|string',
-            'user_id'                           => 'required|integer|min:1|unique:transactions',
+            'user_id'                           => 'required|integer|min:1',
         ]);
 
         if ($validate->fails()){
@@ -87,8 +87,8 @@ class TransactionController extends Controller
         }
 
         //upload image
-        $folder_path = $request->user_id . '/transaction';
-        
+        $folder_path = $request->user_id . '/transaction' . '/' .$request->transactiontype_id.'_'.time();
+
         if($request->file('front_face_of_identity')){
             $inputName = 'front_face_of_identity';
             $data['path_front_face'] = $this->uploadfile($request,$folder_path,$inputName);
@@ -121,7 +121,7 @@ class TransactionController extends Controller
             'region_id'               => $request->region_id,
             'province_id'             => $request->province_id,
             'transactiontype_id'      => $request->transactiontype_id,
-            'enlistment_statue_id'    =>$request->enlistment_statue_id,
+            'enlistment_statue_id'    => $request->enlistment_statue_id,
             'notes'                   => $request->notes,
             'user_id'                 => $request->user_id,
         ]);
@@ -130,7 +130,7 @@ class TransactionController extends Controller
             return $this->apiresponse($transaction,'تم اضافة معاملة جدبدة بنجاح',200);
         }else{
             return $this->apiresponse(null,'عذرا لم يتم اضافة المعاملة يرجى اعادة المحاولة',400);
-        }   
+        }
 
     }
 
@@ -140,9 +140,9 @@ class TransactionController extends Controller
             'mother_name'                       => 'required|max:50|string',
             'father_name'                       => 'required|max:50|string',
             'family_name'                       => 'required|max:50|string',
-            'phone1'                            => 'required|integer',
+            'phone1'                            => 'required|min:10|max:14|regex:/^([0-9\s\-\+\(\)]*)$/',
             'village_number'                    => 'required|integer|min:1',
-            'national_identification_number'    => 'required|integer|min:1',
+            'national_identification_number'    => 'required|min:8|max:14|regex:/^([0-9\s\-\+\(\)]*)$/',
             'front_face_of_identity'            => 'required|image|mimes:jpg,png,jpeg,gif,svg',
             'back_face_of_identity'             => 'required|image|mimes:jpg,png,jpeg,gif,svg',
             'attached_image'                    => 'image|mimes:jpg,png,jpeg,gif,svg',
@@ -171,7 +171,7 @@ class TransactionController extends Controller
 
             //upload image
             $folder_path = $request->user_id . '/transaction';
-            
+
             if($request->file('front_face_of_identity')){
                 $inputName = 'front_face_of_identity';
                 $data['path_front_face'] = $this->uploadfile($request,$folder_path,$inputName);
@@ -212,7 +212,7 @@ class TransactionController extends Controller
                 return $this->apiresponse($transaction,'تم تعديل المعاملة بنجاح',200);
             }else{
                 return $this->apiresponse(null,'عذرا لم يتم تعديل المعاملة يرجى اعادة المحاولة',400);
-            }   
+            }
 
         }else{
             return $this->apiresponse(null,'عذرا المعاملة غير موجودة',500);
